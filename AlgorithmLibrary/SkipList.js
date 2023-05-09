@@ -43,9 +43,32 @@ SkipList.SPACING_Y = 140;
 SkipList.INACTIVE_NODE_COLOR = "#000000";
 SkipList.ACTIVE_NODE_COLOR = "#808080";
 
+SkipList.FLAG = false;
+
 // Return a randomized number
 SkipList.prototype.random = function () 
 {
+	var times;
+
+    times = parseInt(this.txtRandom.value);
+
+	if(isNaN(times)){
+		this.txtRandom.value = "0";
+	}
+
+	if(times > 0){
+		SkipList.FLAG = true;
+		times = times-1;
+		this.txtRandom.value = times.toString();
+		return true;
+	}
+
+	if(SkipList.FLAG){
+		SkipList.FLAG = false;
+		this.txtRandom.value = "0";
+		return false;
+	}
+		
 	return Math.random() < 0.5;
 }
 
@@ -133,9 +156,17 @@ SkipList.prototype.addControls = function ()
 	this.insertButton.onclick = this.insertCallback.bind(this);
 	this.controls.push(this.insertButton);
 
+	this.insertRandButton = addControlToAlgorithmBar("Button", "Insert a Random Number");
+	this.insertRandButton.onclick = this.insertRandCallback.bind(this);
+	this.controls.push(this.insertRandButton);
+
 	this.removeButton = addControlToAlgorithmBar("Button", "Remove");
 	this.removeButton.onclick = this.removeCallback.bind(this);
 	this.controls.push(this.removeButton);
+
+	this.lblRandom = addLabelToAlgorithmBar("Promotion Times for the Next Insertion (if 0 or not a number, then we flip coins): ");
+    this.txtRandom = addControlToAlgorithmBar("Text", "0");
+    this.controls.push(this.txtRandom);
 }
 
 
@@ -213,6 +244,16 @@ SkipList.prototype.lookupCallback = function (event)
 SkipList.prototype.insertCallback = function (event) 
 {
 	var key = parseInt(this.textField.value);
+
+	if (key !== "") {
+		this.textField.value = "";
+		this.implementAction(this.insert.bind(this), key);
+	}
+}
+
+SkipList.prototype.insertRandCallback = function (event) 
+{
+	var key = Math.floor(Math.random() * Math.pow(10, SkipList.KEY_LENGTH));
 
 	if (key !== "") {
 		this.textField.value = "";

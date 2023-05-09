@@ -54,7 +54,7 @@
 				
 					<!-- Drawing canvas where all animation is done.  Note:  can be resized in code -->
 									
-				<canvas id="canvas" width="1000" height="500"></canvas>
+				<canvas id="canvas" width="1000" height="750"></canvas>
 
 				<hr style="border-top: 3px dotted #bbb;"/>
 				
@@ -66,8 +66,27 @@
 				</div>
 				
 			</div> <!-- mainContent -->
+
+			<hr style="border-top: 3px dotted #bbb;"/>
+
+			<div>
+				<h3>Insertion Rule: </h3> <br />
+				When we insert a number into the skip list, 
+				we start from the left sentinel of the top layer on the canvas, 
+				and walk through the skip list to find the location for insertion on the bottom layer on the canvas. 
+				Then, we insert the number into the linked list of the bottom layer. 
+				We flip a coin to decide whether we need to insert the number into the layer above recursively. 
+			</div>
+			<div>
+				<h3>Deletion Rule: </h3> <br />
+				We first check whether the number to be deleted exists in the skip list.
+				Then, we find the number on the bottom layer on the canvas, and remove it from the linked list of this layer.
+				We recursively check whether the number exists in any layer above to make sure that the number is removed from all layers.
+			</div>
 			
 			<div id="footer">  
+				
+
 				<p>Based on templates from <a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">Algorithm Visualizations</a></p>
 			</div>
 
