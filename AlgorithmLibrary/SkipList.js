@@ -38,8 +38,8 @@ SkipList.superclass = Algorithm.prototype;
 SkipList.KEY_LENGTH = 5;
 SkipList.MARGIN_X = 100;
 SkipList.MARGIN_Y = 100;
-SkipList.SPACING_X = 140;
-SkipList.SPACING_Y = 140;
+SkipList.SPACING_X = 70;
+SkipList.SPACING_Y = 70;
 SkipList.INACTIVE_NODE_COLOR = "#000000";
 SkipList.ACTIVE_NODE_COLOR = "#808080";
 
@@ -68,21 +68,30 @@ SkipList.prototype.random = function ()
 		this.txtRandom.value = "0";
 		return false;
 	}
+
+	var probability;
+
+	probability = parseFloat(this.adjustProbabilityText.value);
+
+	if(probability < 0 || probability > 1.0){
+		alert("The probability should be within range 0.0 and 1.0 inclusive; reset to default value 0.5");
+		this.adjustProbabilityText.value = "0.5";
+	}
 		
-	return Math.random() < 0.5;
+	return Math.random() < probability;
 }
 
 // Compare two keys, handling sentinel cases as well
 SkipList.compareKeys = function (k1, k2) 
 {
 	// handling sentinel cases
-	if (k1 === "Left Sentinel") {
+	if (k1 === "Left\nSentinel") {
 		return -1;
-	} else if (k1 === "Right Sentinel") {
+	} else if (k1 === "Right\nSentinel") {
 		return 1;
-	} else if (k2 === "Left Sentinel") {
+	} else if (k2 === "Left\nSentinel") {
 		return 1;
-	} else if (k2 === "Right Sentinel") {
+	} else if (k2 === "Right\nSentinel") {
 		return -1;
 	} // handling numerical cases
 	else if (k1 === k2) {
@@ -167,6 +176,10 @@ SkipList.prototype.addControls = function ()
 	this.lblRandom = addLabelToAlgorithmBar("Promotion Times for the Next Insertion (if 0 or not a number, then we flip coins): ");
     this.txtRandom = addControlToAlgorithmBar("Text", "0");
     this.controls.push(this.txtRandom);
+
+	this.adjustProbabilityLabel = addLabelToAlgorithmBar("Adjust the probability of the coin flip between 0.0 and 1.0 (e.g. 0.8 means the 80% of the time favoring promotions)");
+	this.adjustProbabilityText = addControlToAlgorithmBar("Text", "0.5");
+	this.controls.push(this.adjustProbabilityText);
 }
 
 
@@ -175,8 +188,8 @@ SkipList.prototype.reset = function ()
 	this.nextIndex = 0;
 	this.size = 0;
 
-	// initialize an empty skip list with one left sentinel and one right sentinel only
-	this.root = { key: "Left Sentinel", ind: 0, layer: 0, right: { key: "Right Sentinel", ind: 1, layer: 0 } };
+	// initialize an empty skip list with one Left\nSentinel and one Right\nSentinel only
+	this.root = { key: "Left\nSentinel", ind: 0, layer: 0, right: { key: "Right\nSentinel", ind: 1, layer: 0 } };
 	this.root.right.left = this.root;
 
 	// create a banner on top of the screen for message display
@@ -434,8 +447,8 @@ SkipList.prototype.insert = function (key)
 				this.cmd("Step");
 
 				// on the new layer, create left and right sentinels
-				topRoot = this.newNode("Left Sentinel", 0, 0);
-				topRoot.right = this.newNode("Right Sentinel", this.size - 1 + 2, 0);
+				topRoot = this.newNode("Left\nSentinel", 0, 0);
+				topRoot.right = this.newNode("Right\nSentinel", this.size - 1 + 2, 0);
 				topRoot.right.left = topRoot;
 				topRoot.down = p1;
 				topRoot.down.up = topRoot;
